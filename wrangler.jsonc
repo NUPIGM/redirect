@@ -9,6 +9,18 @@
 	"compatibility_date": "2025-10-24",
 	"observability": {
 		"enabled": true
+	},
+	"kv_namespaces": [
+		{
+			"binding": "KV",
+			"id": "replace-this-with-your-real-kv-id"
+		}
+	],
+	"assets": { "directory": "./dist/", "binding": "ASSETS" },
+	"dev": {
+		"ip": "0.0.0.0",
+		"host": "localhost",
+		"port": 80
 	}
 	/**
 	 * Smart Placement
