@@ -33,7 +33,7 @@ export async function saveUrl(request, env, url) {
 	}
 }
 
-export async function delUrl(request,env) {
+export async function delUrl(request, url, env) {
 	const authHeader = request.headers.get('Authorization');
 	if (!authHeader) {
 		return new Response('Authorization header missing', { status: 401 });
@@ -50,9 +50,35 @@ export async function delUrl(request,env) {
 		// 验证失败
 		return new Response('Invalid token', { status: 401 });
 	}
+	if (url.searchParams.has('name')) {
+		const params = url.searchParams.get('name');
+		if (params) {
+			await env.KV.delete(params);
+			return Response.json({
+				key: params,
+				status: 1
+			});
+		}
+	}
 	const list = await env.KV.list(); // 获取键列表
 	for (const key of list.keys) {
 		await env.KV.delete(key.name);
 	}
 	return new Response('全部删除完成');
+}
+
+export async function getKey(url, env) {
+	if (url.searchParams.has('name')) {
+		const params = url.searchParams.get('name');
+		if (params) {
+			const json = await env.KV.get(params);
+			return Response.json({
+				key: params,
+				data: json,
+				status: 1,
+			});
+		}
+	}
+	const keyList = await env.KV.list();
+	return new Response(JSON.stringify(keyList));
 }

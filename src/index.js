@@ -8,7 +8,7 @@
  * Learn more at https://developers.cloudflare.com/workers/
  */
 // import expired from util.js
-import { saveUrl, delUrl} from "./util";
+import { saveUrl, delUrl, getKey} from "./util";
 
 async function middleware() {
 
@@ -23,17 +23,15 @@ export default {
 			if (request.method === 'POST') {
 				return saveUrl(request, env, url);
 			} else if (request.method === 'DELETE') {
-				return delUrl(request,env)
+				return delUrl(request,url,env)
 			} else if (request.method === 'GET') {
-				const keyList = await env.KV.list();
-				return new Response(JSON.stringify(keyList));
+				return getKey(url,env)
 			}
 			return new Response('', { status: 405 });
 		}
 		// 获取长链接
 		if (request.method === 'GET') {
-			const value = await env.KV.get(path); //7qfqtp
-			// return Response.redirect(value, 302);
+			const value = await env.KV.get(path);
 			if (value) {
 				const valueJson = JSON.parse(value);
 				if (valueJson.expired < Date.now()) {
