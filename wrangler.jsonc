@@ -7,13 +7,15 @@
 	"name": "redirect",
 	"main": "src/index.js",
 	"compatibility_date": "2025-10-24",
+	"minify": false,
 	"observability": {
 		"enabled": true
 	},
+	"vars": { "admin": "admin" },
 	"kv_namespaces": [
 		{
 			"binding": "KV",
-			"id": "replace-this-with-your-real-kv-id"
+			"id": "19b7cfc1981742a2862065abbc0badc2"
 		}
 	],
 	"assets": { "directory": "./dist/", "binding": "ASSETS" },
